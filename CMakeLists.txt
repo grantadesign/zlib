@@ -149,6 +149,7 @@ endif(MINGW)
 
 add_library(zlib SHARED ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
 add_library(zlibstatic STATIC ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
+SET_PROPERTY(TARGET zlib PROPERTY FOLDER "zlib")
 set_target_properties(zlib PROPERTIES DEFINE_SYMBOL ZLIB_DLL)
 set_target_properties(zlib PROPERTIES SOVERSION 1)
 
@@ -194,9 +195,14 @@ endif()
 
 add_executable(example test/example.c)
 target_link_libraries(example zlib)
-add_test(example example)
+#TS: had to change the following, because we change CMAKE_RUNTIME_OUTPUT_DIRECTORY in the build,
+#and the simplest form of add_test won't make it findable there.
+#add_test(example example)
+add_test(NAME example COMMAND example)
+SET_PROPERTY(TARGET example PROPERTY FOLDER "zlib")
 
 add_executable(minigzip test/minigzip.c)
+SET_PROPERTY(TARGET minigzip PROPERTY FOLDER "zlib")
 target_link_libraries(minigzip zlib)
 
 if(HAVE_OFF64_T)
