@@ -13,8 +13,6 @@
 *.gcno
 *.gcov
 
-/example
-/example64
 /examplesh
 /libz.so*
 /minigzip
